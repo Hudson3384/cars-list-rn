@@ -3,30 +3,55 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-na
 import Home from "../screens/Home"
 import Model from "../screens/Model"
 import SignIn from "../screens/SignIn"
+import Button from '../components/Button'
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type RootStackParamList = {
   Home: undefined
-  Model: {
-    params: string
-  },
   SignIn: undefined
 }
-
-const Stack = createNativeStackNavigator()
 
 export interface PageProps<T extends keyof RootStackParamList> {
   navigation: NativeStackNavigationProp<RootStackParamList, T>
 }
 
+const Stack = createNativeStackNavigator()
+
+const logoutButtonStyle = "bg-blue-400 p-4 rounded-md"
+const logoutTextStyle = "font-semibold text-white"
+
+const LogoutButton = (props: TouchableOpacityProps) => {
+  return (
+    <TouchableOpacity className={logoutButtonStyle} {...props}>
+      <Text className={logoutTextStyle}>Logout</Text>
+    </TouchableOpacity>
+  )
+}
 const MainRoutes = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Model" component={Model} />
-        <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Navigator initialRouteName="Home"  >
+        <Stack.Screen name="Home" component={Home}
+          options={({ navigation }) => ({
+            headerBackVisible: false,
+            goBack: null,
+            headerLeft: null,
+            title: "Car Brands",
+            headerRight: () => (
+              <LogoutButton
+                onPress={() => {
+                  console.log('foi')
+                  AsyncStorage.clear()
+                  navigation.replace('SignIn')
+                }}
+              />
+            ),
+          })}
+        />
+        <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   )
 }
 

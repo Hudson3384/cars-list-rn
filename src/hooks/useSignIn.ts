@@ -31,7 +31,7 @@ export const useSignIn = (navigation: PageProps<'SignIn'>['navigation']) => {
       .then(e => {
         setData(e.data.user)
         AsyncStorage.setItem('user', JSON.stringify(e.data.user))
-        navigation.navigate('Home')
+        navigation.replace('Home')
       })
       .catch(e => {
         setError('root.serverError', { type: "400", message: e.response.data.message })
