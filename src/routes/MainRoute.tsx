@@ -29,7 +29,7 @@ const LogoutButton = (props: TouchableOpacityProps) => {
 const MainRoutes = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"  >
+      <Stack.Navigator initialRouteName="SignIn"  >
         <Stack.Screen name="Home" component={Home}
           options={({ navigation }) => ({
             headerBackVisible: false,
