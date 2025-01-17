@@ -1,17 +1,28 @@
-import { useState } from "react"
-import { Text } from "react-native"
-const useQuery = () => {
-  const [data, setData] = useState()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(undefined)
-  return {
-  }
+import { FlatList, Text } from "react-native"
+import useFetch from "../hooks/useFetch"
+import { api } from "../helpers/api"
+
+type Model = {
+  codigo: string
+  nome: string
+}
+const ModelCard = ({ brand }: { brand: any }) => {
+  return (
+    <Text>{brand.nome}</Text>
+  )
 }
 
-const Model = () => {
-  const { data, error, loading } = useQuery()
+const Model = ({ code }: { code: string }) => {
+  const { data } = useFetch(() => api.get(`carros/marcas/${code}/modelos`)
+    .then(e => e.data.modelos)
+  )
+  console.log('model', data, code)
+
   return (
-    <Text>model</Text>
+    <FlatList
+      data={data}
+      renderItem={({ item }) => <ModelCard brand={item} />}
+    />
   )
 }
 

@@ -1,35 +1,25 @@
-import { Control, Controller, ControllerProps, FieldErrors, InputValidationRules, useForm } from "react-hook-form"
-import { Button, Text, TextInput, TextInputProps, View } from "react-native"
+import { Control, Controller, FieldErrors } from "react-hook-form"
+import { Button, Text, TextInput, TextInputProps } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { PageProps } from "../routes/MainRoute"
+import { useSignIn } from "../hooks/useSignIn"
 
 type FormProps = {
-  email: string
+  user: string
   password: string
 }
 
 interface FormTextInputProps {
   control: Control<FormProps>
-  name: 'email' | 'password'
+  name: 'user' | 'password'
   errors: Partial<FieldErrors<FormProps>>
   placeholder: string
   inputProps?: TextInputProps
+  rules: {}
 }
 
-
-const useSignIn = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
-    defaultValues: {
-      email: "",
-      password: ""
-    }
-  })
-
-  const handleLogin = (data: any) => {
-    console.log('login', data)
-  }
-
-
-  return { control, errors, handleSubmit, handleLogin }
+const ErrorText = ({ message }: { message: string }) => {
+  return <Text className="decoration-red-50">{message}</Text>
 }
 
 const FormTextInput = ({
@@ -55,18 +45,21 @@ const FormTextInput = ({
         )}
         {...{ name, control, ...props }}
       />
-      {errors[name] && <Text>{errors[name]?.message || 'This item is required'}</Text>}
+      {errors[name] && <ErrorText message={errors[name]?.message || 'This item is required'} />}
     </>
   )
 }
 
-const SignIn = () => {
-  const { control, errors, handleSubmit, handleLogin } = useSignIn()
+const SignIn = ({ navigation }: PageProps<'SignIn'>) => {
+  const { control, errors, isSubmitting, handleSubmit, handleLogin } = useSignIn(navigation)
   return (
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
       <FormTextInput
-        name="email"
-        placeholder="email"
+        rules={{
+          required: 'This item is required'
+        }}
+        name="user"
+        placeholder="user"
         {...{ control, errors }}
       />
       <FormTextInput
@@ -76,7 +69,8 @@ const SignIn = () => {
         {...{ control, errors }}
         inputProps={{ secureTextEntry: true }}
       />
-      <Button title="Submit" onPress={handleSubmit(handleLogin)} />
+      {errors?.root?.serverError.type === "400" && <ErrorText message={errors?.root?.serverError.message || ''} />}
+      <Button title="Submit" disabled={isSubmitting} onPress={handleSubmit(handleLogin)} />
     </SafeAreaView>
   )
 }

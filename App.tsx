@@ -1,23 +1,12 @@
 import "./styles/global.css"
-import { createStaticNavigation } from '@react-navigation/native'
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import Home from "./src/screens/Home"
-import Model from "./src/screens/Model"
-import SignIn from "./src/screens/SignIn"
-
-const RootStack = createNativeStackNavigator({
-  initialRouteName: "SignIn",
-  screens: {
-    Home: Home,
-    Model: Model,
-    SignIn: SignIn
-  }
-})
+import { UserProvider } from "./src/contexts/UserContext"
+import MainRoutes from "./src/routes/MainRoute"
 
 export default function App() {
-  const Routes = createStaticNavigation(RootStack)
   return (
-    <Routes />
+    <UserProvider>
+      <MainRoutes />
+    </UserProvider>
   )
 }
 
