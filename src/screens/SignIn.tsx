@@ -1,5 +1,5 @@
 import { Control, Controller, FieldErrors } from "react-hook-form"
-import { Text, Image, TextInput, TextInputProps, TouchableOpacity } from "react-native"
+import { Text, Image, TextInput, TextInputProps } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { PageProps } from "../routes/MainRoute"
 import { useSignIn } from "../hooks/useSignIn"

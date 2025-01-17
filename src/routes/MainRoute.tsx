@@ -1,9 +1,7 @@
-import { createStaticNavigation, NavigationContainer, NavigationContext } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack"
 import Home from "../screens/Home"
-import Model from "../screens/Model"
 import SignIn from "../screens/SignIn"
-import Button from '../components/Button'
 import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -41,7 +39,6 @@ const MainRoutes = () => {
             headerRight: () => (
               <LogoutButton
                 onPress={() => {
-                  console.log('foi')
                   AsyncStorage.clear()
                   navigation.replace('SignIn')
                 }}

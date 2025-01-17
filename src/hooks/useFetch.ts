@@ -7,7 +7,7 @@ const useFetch = <T,>(func: () => Promise<T[]>) => {
 
   useEffect(() => {
     func()
-      .then(e => { console.log('fetch', e); setData(e) })
+      .then(e => { setData(e) })
       .catch(e => setError(e.response.data.message))
       .finally(() => setLoading(false))
   }, [])
