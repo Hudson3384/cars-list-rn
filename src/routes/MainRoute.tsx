@@ -39,8 +39,8 @@ const MainRoutes = () => {
             headerRight: () => (
               <LogoutButton
                 onPress={() => {
+                  navigation.navigate('SignIn')
                   AsyncStorage.clear()
-                  navigation.replace('SignIn')
                 }}
               />
             ),
